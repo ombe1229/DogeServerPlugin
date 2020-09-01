@@ -1,6 +1,4 @@
-﻿using Exiled.Events.Commands.Reload;
-using Exiled.Events.Extensions;
-using Log = Exiled.API.Features.Log;
+﻿using Log = Exiled.API.Features.Log;
 using ServerEvents = Exiled.Events.Handlers.Server;
 using PlayerEvents = Exiled.Events.Handlers.Player;
 using MapEvents = Exiled.Events.Handlers.Map;
@@ -13,7 +11,9 @@ namespace DogeServerPlugin{
         public Database DatabasePlayerData { get; private set; }
 
         public void LoadEvents(){
-            
+            PlayerEvents.Joined += EventHandlers.OnJoin;
+            PlayerEvents.Died += EventHandlers.OnPlayerDeath;
+            PlayerEvents.Left += EventHandlers.OnPlayerLeft;
         }
 
         public void LoadCommands(){
