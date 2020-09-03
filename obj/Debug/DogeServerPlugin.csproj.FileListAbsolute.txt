@@ -7,7 +7,6 @@ C:\Users\smomb\RiderProjects\DogeServerPlugin\DogeServerPlugin\bin\Debug\Exiled.
 C:\Users\smomb\RiderProjects\DogeServerPlugin\DogeServerPlugin\bin\Debug\Exiled.Events.dll
 C:\Users\smomb\RiderProjects\DogeServerPlugin\DogeServerPlugin\bin\Debug\Exiled.Loader.dll
 C:\Users\smomb\RiderProjects\DogeServerPlugin\DogeServerPlugin\bin\Debug\Exiled.Permissions.dll
-C:\Users\smomb\RiderProjects\DogeServerPlugin\DogeServerPlugin\bin\Debug\Exiled.Updater.dll
 C:\Users\smomb\RiderProjects\DogeServerPlugin\DogeServerPlugin\bin\Debug\LiteDB.dll
 C:\Users\smomb\RiderProjects\DogeServerPlugin\DogeServerPlugin\bin\Debug\Mirror.dll
 C:\Users\smomb\RiderProjects\DogeServerPlugin\DogeServerPlugin\bin\Debug\UnityEngine.CoreModule.dll

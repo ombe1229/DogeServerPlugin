@@ -14,6 +14,7 @@ namespace DogeServerPlugin{
             PlayerEvents.Joined += EventHandlers.OnJoin;
             PlayerEvents.Died += EventHandlers.OnPlayerDeath;
             PlayerEvents.Left += EventHandlers.OnPlayerLeft;
+            MapEvents.AnnouncingScpTermination += EventHandlers.OnScpTerminated;
         }
 
         public void LoadCommands(){
@@ -30,6 +31,10 @@ namespace DogeServerPlugin{
         }
 
         public override void OnDisabled(){
+            PlayerEvents.Joined -= EventHandlers.OnJoin;
+            PlayerEvents.Died -= EventHandlers.OnPlayerDeath;
+            PlayerEvents.Left -= EventHandlers.OnPlayerLeft;
+            MapEvents.AnnouncingScpTermination -= EventHandlers.OnScpTerminated;
             EventHandlers = null;
         }
 

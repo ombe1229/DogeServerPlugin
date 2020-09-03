@@ -48,8 +48,20 @@ namespace DogeServerPlugin{
             }
         }
 
+        internal void OnRoundStart(){
+            dogeServerPlugin.IsStarted = true;
+            foreach(var player in Exiled.API.Features.Player.List){
+                player.GetDatabasePlayer().TotalGamesPlayed++;
+                AddExp(player, 3);
+            }
+        }
+
 
         internal void OnPlayerDeath(DiedEventArgs ev){
+            AddExp(ev.Target, 5);
+            ev.Target.GetDatabasePlayer().TotalDeath++;
+            ev.Killer.GetDatabasePlayer().TotalKilled++;
+
             if (_pluginInstance.Config.ScpHealingEnable && ev.Killer.Team == Team.SCP && ev.Killer != ev.Target){
                     int heal = 0;
                     switch (ev.Killer.Role)
@@ -80,7 +92,36 @@ namespace DogeServerPlugin{
                     if (ev.Killer.MaxHealth <= ev.Killer.Health + heal) ev.Killer.Health = ev.Killer.MaxHealth;
                     else ev.Killer.Health += heal;
                     ev.Killer.Broadcast(10,$"당신은 인간을 처치하여 체력 <color=red>${heal}</color>만큼 회복했습니다.\n현재 HP:<color=red>{ev.Killer.Health}</color>");
+                    AddExp(ev.Killer, 5);
                 }
+        }
+
+        internal void OnScpTerminated(AnnouncingScpTerminationEventArgs ev){
+            ev.Killer.GetDatabasePlayer().TotalScpKilled++;
+            AddExp(ev.Killer, 20);
+
+            if (_pluginInstance.Config.ScpTerminatedMessageEnable){
+                string teamName = "";
+                switch(ev.Killer.Team){
+                    case Team.CDP:
+                        teamName = "<color=orange>D계급 인원</color>";
+                        break;
+                    case Team.CHI:
+                        teamName = "<color=green>혼돈의 반란</color>";
+                        break;
+                    case Team.MTF:
+                        teamName = "<color=blue>기동특무부대</color>";
+                        break;
+                    case Team.RSC:
+                        teamName = "<color=yellow>과학자</color>";
+                        break;
+                    default:
+                        teamName = "<color=red>알 수 없음</color>";
+                        break;
+                }
+
+                Map.Broadcast(10, $"<color=red>{ev.Role.fullName}</color>(이)가 {teamName}에 의해 격리되었습니다.\n격리 사유:<color=red>{ev.TerminationCause}</color>");
+            }
         }
 
 
@@ -88,6 +129,23 @@ namespace DogeServerPlugin{
 
         private string FilteringNickname(Exiled.API.Features.Player player){
             return player.Nickname.Replace("Youtube", "").Replace("Twitch","").Replace("유튜브","").Replace("트위치","");
+        }
+
+        private static void AddExp(Exiled.API.Features.Player player, int exp)
+        {
+            int nowExp = player.GetDatabasePlayer().Exp;
+            int nowLevel = player.GetDatabasePlayer().Level;
+            if (nowExp + exp >= (nowLevel + 2) * 2)
+            {
+                player.GetDatabasePlayer().Level++;
+                player.GetDatabasePlayer().Exp = 0;
+                player.Broadcast(5,$"레벨업!\n당신의 레벨이 <color=green>{player.GetDatabasePlayer().Level}</color>레벨으로 올랐습니다.\n`를 눌러 콘솔창을 연 뒤 <color=green>.irc_stats</color> 명령어로 확인이 가능합니다!");
+            }
+            else
+            {
+                player.GetDatabasePlayer().Exp += exp;
+            }
+            return;
         }
     }
 }
