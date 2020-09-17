@@ -1,5 +1,6 @@
 # DogeServerPlugin
-SCP:SL Doge서버 전용 플러그인
+SCP:SL Doge서버 전용 플러그인</br>
+현재 폐기상태.
 
 # 기능
  - 닉네임에 "Youtube", "Twitch", "유튜브", "트위치" 포함 시 삭제
